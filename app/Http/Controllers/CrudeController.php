@@ -36,7 +36,22 @@ class CrudeController extends Controller
      */
     public function store(Request $request)
     {        
-        return dump($request);
+        try{
+            $comic=new Comic();
+            $comic['title']=$request['title'];
+            $comic['description']=$request['description'];
+            $comic['thumb']=$request['thumb'];
+            $comic['price']=$request['price'];
+            $comic['series']=$request['series'];
+            $comic['sale_date']=$request['sale_date'];
+            $comic['type']=$request['type'];
+            $comic->save();
+            return $this->show($comic['id']);
+        }
+        catch(\Exception $e){
+            $error=$e->getMessage();
+            return view("comics.temp",compact('error'));
+        }
     }
 
     /**
@@ -47,6 +62,9 @@ class CrudeController extends Controller
      */
     public function show($id)
     {
+        // if(!is_numeric($id)){
+        //     return $this->destroy($id);
+        // }
         $comic=Comic::find($id);
         return view("comics.detail",compact('comic'));
     }
@@ -82,6 +100,9 @@ class CrudeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return view("comics");
+        $comic=Comic::find($id);
+        $comic->delete();
+        return view("comics");
     }
 }
