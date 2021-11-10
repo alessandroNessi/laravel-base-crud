@@ -7,9 +7,10 @@
         <title>Document</title>
         <link rel="stylesheet" href="{{asset('css/app.css')}}">
     </head>
-    <body>
+    <body class="ml-5">
 
         @include('partials.header')
+
         @yield('content')
 
         <script src="{{asset('js/app.js')}}"></script>

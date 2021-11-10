@@ -25,7 +25,7 @@ class CrudeController extends Controller
      */
     public function create()
     {
-        //
+        return view("comics.create");
     }
 
     /**
@@ -35,8 +35,8 @@ class CrudeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {        
+        return dump($request);
     }
 
     /**
@@ -47,7 +47,8 @@ class CrudeController extends Controller
      */
     public function show($id)
     {
-        //
+        $comic=Comic::find($id);
+        return view("comics.detail",compact('comic'));
     }
 
     /**
