@@ -9,6 +9,26 @@
   width: 300px;
 }
 
+.modale {
+  background-color: rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.modale .messaggio {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 180px;
+  transform: translate(-200px, -90px);
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+}
+
 /*!
  * Bootstrap v4.6.1 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors

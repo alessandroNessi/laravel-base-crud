@@ -21,13 +21,19 @@
                         <a href="/comics/{{$comic['id']}}"><button type="button" class="btn btn-secondary">Details</button></a>
                         <a href="/comics/{{$comic['id']}}/edit"><button type="button" class="btn btn-warning">Modify</button></a>
                         <button id="deletelayout{{$comic['id']}}" onclick="displayForm({{$comic['id']}})" type="button" class="btn btn-danger">Delete</button>
-                        <div id="deleteform{{$comic['id']}}" class="d-none">
-                            <form action="{{ route('comics.destroy', $comic['id'] ) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <input type="submit" class="btn-danger btn" value="Confirm">
-                            </form>
-                            <button onclick="hideForm({{$comic['id']}})" class="btn btn-primary">Cancel</button>
+                        <div id="modale{{$comic['id']}}" class="d-none modale">
+                            <div id="messaggio" class="messaggio">
+                                <h2 class="mt-4">warning message:</h2>
+                                <p>sei sicuro di voler cancellare il record "{{$comic['title']}}"?</p>
+                                <div class="d-flex justify-content-center">
+                                    <form action="{{ route('comics.destroy', $comic['id'] ) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="submit" class="btn-danger btn" value="Confirm">
+                                    </form>
+                                    <button onclick="hideForm({{$comic['id']}})" class="btn ml-3 btn-primary">Cancel</button>
+                                </div>
+                            </div>
                         </div>
                     </td>
                 </tr>
