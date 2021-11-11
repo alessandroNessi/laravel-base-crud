@@ -17,17 +17,22 @@
                     <td>{{$comic['series']}}</td>
                     {{-- <td><img class="table_thumbnails" src="{{$comic['thumb']}}" alt="{{$comic['title']}}"></td> --}}
                     <td>{{$comic['title']}}</td>
-                    <td>
+                    <td class="stdwidth d-flex">
                         <a href="/comics/{{$comic['id']}}"><button type="button" class="btn btn-secondary">Details</button></a>
                         <a href="/comics/{{$comic['id']}}/edit"><button type="button" class="btn btn-warning">Modify</button></a>
-                        <form action="{{ route('comics.destroy', $comic['id'] ) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <input type="submit" class="btn-danger btn" value="Delete">
-                        </form>
+                        <button id="deletelayout{{$comic['id']}}" onclick="displayForm({{$comic['id']}})" type="button" class="btn btn-danger">Delete</button>
+                        <div id="deleteform{{$comic['id']}}" class="d-none">
+                            <form action="{{ route('comics.destroy', $comic['id'] ) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" class="btn-danger btn" value="Confirm">
+                            </form>
+                            <button onclick="hideForm({{$comic['id']}})" class="btn btn-primary">Cancel</button>
+                        </div>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+    <script src="{{asset('js/comics.js')}}"></script>
 @endsection
