@@ -8,6 +8,18 @@ use App\Comic;
 class CrudeController extends Controller
 {
     /**
+     * @param validation rules array
+     */
+    protected $validationRules=[
+        'title' => 'required|max:200',
+        'description' => 'required|max:10000',
+        'thumb' => 'nullable|max:700',
+        'price' => 'required|min:0|max:9999.99',
+        'series' => 'required|max:100',
+        'sale_date' => 'required|date',
+        'type' => 'required|max:100'
+    ];
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -35,23 +47,14 @@ class CrudeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {        
-        try{
-            $comic=new Comic();
-            $comic['title']=$request['title'];
-            $comic['description']=$request['description'];
-            $comic['thumb']=$request['thumb'];
-            $comic['price']=$request['price'];
-            $comic['series']=$request['series'];
-            $comic['sale_date']=$request['sale_date'];
-            $comic['type']=$request['type'];
-            $comic->save();
-            return $this->show($comic['id']);
-        }
-        catch(\Exception $e){
-            $error=$e->getMessage();
-            return view("comics.temp",compact('error'));
-        }
+    {      
+        $request->validate($this->validationRules);
+
+        $data=$request->all();
+
+        $newproduct= Comic::create($data);
+
+        return redirect()->route("comics.show", $newproduct->id);
     }
 
     /**
@@ -60,12 +63,8 @@ class CrudeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Comic $comic)
     {
-        // if(!is_numeric($id)){
-        //     return $this->destroy($id);
-        // }
-        $comic=Comic::find($id);
         return view("comics.detail",compact('comic'));
     }
 
@@ -75,9 +74,9 @@ class CrudeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Comic $comic)
     {
-        //
+        return view("comics.modify",compact('comic'));
     }
 
     /**
@@ -87,9 +86,15 @@ class CrudeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Comic $comic)
     {
-        //
+        $request->validate($this->validationRules);
+
+        $data=$request->all();
+
+        $comic->update($data);
+
+        return redirect()->route("comics.show", $comic->id);
     }
 
     /**
@@ -98,11 +103,9 @@ class CrudeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Comic $comic)
     {
-        return view("comics");
-        $comic=Comic::find($id);
         $comic->delete();
-        return view("comics");
+        return redirect()->route("comics.index");
     }
 }
